@@ -23,20 +23,12 @@ def read_md_file(file_path):
         insert_obj["Img_Path"] = img_path
 
         ##getting contextual information
-        con_info = content[3]
-        con_set = set(con_info.split("\n")[2:])
-
-        insert_obj["Contextual"] = cleaned_con
+        con_info = content[3][12:]
+        insert_obj["Contextual"] = con_info
         
         ##getting visual information
-        vis_info = content[2]
-
-        vis_set = set(vis_info.split("\n")[2:])
-        if "" in vis_set:
-            vis_set.remove("")
-        cleaned_vis = list(vis_set)
-
-        insert_obj["Visual"] = cleaned_vis
+        vis_info = content[2][7:]
+        insert_obj["Visual"] = vis_info
         
         ## getting art identification info
         id_info = content[1]
@@ -65,8 +57,8 @@ def read_md_file(file_path):
 
 def write_template(art_info):
     doc = Document('template.docx')
-    for paragraph in doc.paragraphs:
-        print(paragraph.text) 
+    # for paragraph in doc.paragraphs:
+    #     print(paragraph.text) 
 
     #replacing title
     doc.paragraphs[0].text = art_info["Title"]
@@ -80,10 +72,17 @@ def write_template(art_info):
     #doc.add_picture(art_info["Img_Path"], width=Inches(3), height=Inches(4))
 
     #adding table
-    table = doc.add_table(row=2, cols=2)
+    table = doc.add_table(rows=2, cols=2, style="Table Grid")
+    print(table.style.name)
+
     header_cells = table.rows[0].cells
+    content_cells = table.rows[1].cells
+
     header_cells[0].text = "Visual"
     header_cells[1].text = "Contextual"
+    
+    content_cells[0].text = art_info["Visual"]
+    content_cells[1].text = art_info["Contextual"]
 
     doc.save(art_info["Title"] + ".docx")
 
