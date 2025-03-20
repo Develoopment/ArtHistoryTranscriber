@@ -1,6 +1,7 @@
 from docx import Document
 from docx.shared import Inches
 import os
+import shutil
 
 def read_md_file(file_path):
 
@@ -90,9 +91,12 @@ def write_template(art_info):
     content_cells[1].text = art_info["Contextual"]
 
     doc.save(art_info["Title"] + ".docx")
+    doc_path = "C:/Users/neerr/Desktop/Code/Art History Transcribing/" + art_info["Title"] + ".docx"
+    shutil.move(doc_path, "C:/Users/neerr/Desktop/Code/Art History Transcribing/Documents")
     print("Generated: " + art_info["Title"])
 
 ###MAIN LOOP
+input("run program")
 md_base_path = "C:/Users/neerr/Desktop/second brain/Art History/"
 dir_list = os.listdir(md_base_path)
 
